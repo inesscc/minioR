@@ -1,0 +1,13 @@
+test_that("public functions exist", {
+  expect_true(is.function(minio_list_objects))
+  expect_true(is.function(minio_object_exists))
+  expect_true(is.function(minio_get_object_metadata))
+  expect_true(is.function(minio_get_object))
+  expect_true(is.function(minio_get_csv))
+  expect_true(is.function(minio_get_parquet))
+  expect_true(is.function(minio_download_object))
+  expect_true(is.function(minio_put_object))
+  expect_true(is.function(minio_fput_object))
+  expect_true(is.function(minio_copy_object))
+  expect_true(is.function(minio_remove_object))
+})

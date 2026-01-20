@@ -1,0 +1,44 @@
+Package: minioR
+Type: Package
+Title: Simplified and Robust Interface for MinIO Object Storage
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Javier", "Ramos",
+      email = "jaramosg@ine.gob.cl",
+      role = c("aut", "cre")
+    ),
+    person(
+      "Victor", "Ballesteros",
+      email = "vaballesteros@ine.gob.cl",
+      role = "ctb"
+    ),
+    person(
+      "Catalina", "Quijada",
+      email = "caquijada@ine.gob.cl",
+      role = "ctb"
+    ),
+    person(
+      "Gabriel", "Molina",
+      email = "gemolinah@ine.gob.cl",
+      role = "ctb"
+    )
+  )
+Description: Provides a simplified and robust interface for interacting with
+    MinIO object storage from R. The package is built on top of the aws.s3
+    package and adds additional layers of validation, asset verification,
+    and safer error handling to improve reliability when working with
+    object storage systems compatible with the S3 API. It is designed to
+    reduce boilerplate code and common pitfalls when managing buckets,
+    objects, and data assets in MinIO environments.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    aws.s3
+Suggests:
+    arrow,
+    testthat (>= 3.0.0),
+    tzdb
+RoxygenNote: 7.3.3
+Config/testthat/edition: 3
