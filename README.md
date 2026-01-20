@@ -57,8 +57,8 @@ Make sure the following variables are defined before using the package:
 
 ```r
 Sys.setenv(
-  MINIO_ENDPOINT = "http://localhost:9000",
-  MINIO_REGION = "us-east-1",
+  AWS_S3_ENDPOINT = "localhost:9000",
+  AWS_REGION = "us-east-1",
   AWS_SECRET_ACCESS_KEY = "minioadmin",
   AWS_ACCESS_KEY_ID = "minioadmin",
   AWS_SIGNATURE_VERSION=2
@@ -80,7 +80,7 @@ library(minioR)
 ### List objects in a bucket/prefix
 
 ```r
-objs <- minio_get_list_objects(
+objs <- minio_list_objects(
   bucket = "data",
   prefix = "raw/",
   recursive = TRUE
@@ -93,8 +93,8 @@ print(objs)
 
 ```r
 exists <- minio_object_exists(
-bucket = "data",
-object_name = "raw/example.csv"
+  bucket = "data",
+  object_name = "raw/example.csv"
 )
 
 exists
@@ -160,8 +160,8 @@ head(df_csv)
 
 ```r
 df_parquet <- minio_get_parquet(
-bucket = "data",
-object_name = "curated/example.parquet"
+  bucket = "data",
+  object_name = "curated/example.parquet"
 )
 
 head(df_parquet)
