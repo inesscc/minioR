@@ -20,12 +20,11 @@ explicit interface.
 
 Access to MinIO is configured using environment variables:
 \describe{
-  \item{MINIO_ENDPOINT}{Endpoint URL (e.g. \code{http://localhost:9000})}
+  \item{AWS_S3_ENDPOINT}{Endpoint URL (e.g. \code{localhost:9000})}
   \item{AWS_SECRET_ACCESS_KEY}{Access key}
   \item{AWS_ACCESS_KEY_ID }{Secret key}
   \item{AWS_SIGNATURE_VERSION}{Use value = 2}
-  \item{MINIO_REGION}{Region (optional)}
-  \item{MINIO_USE_HTTPS}{Logical value indicating whether to use HTTPS}
+  \item{AWS_REGION}{Region (optional)}
 }
 }
 
