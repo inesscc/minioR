@@ -1,5 +1,4 @@
-# minioR
-
+# minioR <img src="man/figures/minioR_logo.png" align="right" height="120" />
 <!-- badges: start -->
 <!-- badges: end -->
 
