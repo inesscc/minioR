@@ -38,13 +38,14 @@ LazyData: true
 Imports:
     aws.s3,
     arrow,
-    tzdb,
+    jsonlite,
     haven,
     readxl,
     writexl,
     feather
 Suggests:
     testthat (>= 3.0.0),
-    mockery
+    mockery,
+    tzdb
 RoxygenNote: 7.3.3
 Config/testthat/edition: 3
