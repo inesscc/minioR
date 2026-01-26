@@ -36,14 +36,15 @@ URL: https://inesscc.github.io/minioR/, https://github.com/inesscc/minioR
 Encoding: UTF-8
 LazyData: true
 Imports:
-    aws.s3
-Suggests:
+    aws.s3,
     arrow,
-    testthat (>= 3.0.0),
     tzdb,
     haven,
     readxl,
     writexl,
     feather
+Suggests:
+    testthat (>= 3.0.0),
+    mockery
 RoxygenNote: 7.3.3
 Config/testthat/edition: 3
