@@ -76,6 +76,9 @@ minio_fput_dir <- function(bucket,
   if (!is.null(include)) stopifnot(is.character(include))
   if (!is.null(exclude)) stopifnot(is.character(exclude))
 
+  # Normalize base dir once (absolute + POSIX separators)
+  base_dir <- normalizePath(dir, winslash = "/", mustWork = TRUE)
+
   # List files
   files <- list.files(
     path = dir,
@@ -86,22 +89,31 @@ minio_fput_dir <- function(bucket,
     no.. = TRUE
   )
 
-  # Remove directories just in case (list.files should only return files)
-  files <- files[file.info(files)$isdir %in% FALSE]
+  # Remove directories just in case
+  if (length(files) > 0) {
+    fi <- file.info(files)
+    files <- files[!is.na(fi$isdir) & !fi$isdir]
+  }
+
   if (length(files) == 0) {
-    out <- data.frame(
+    return(data.frame(
       local_file = character(0),
       object = character(0),
       uploaded = logical(0),
       error = character(0),
       stringsAsFactors = FALSE
-    )
-    return(out)
+    ))
   }
 
-  # Build relative paths and normalize to POSIX separators for object keys
-  rel <- substring(files, nchar(normalizePath(dir, winslash = "/", mustWork = TRUE)) + 2)
+  # Normalize file paths to absolute + POSIX separators to match base_dir form
+  files_abs <- normalizePath(files, winslash = "/", mustWork = TRUE)
+
+  # Build relative paths: strip "<base_dir>/"
+  rel <- sub(paste0("^", base_dir, "/+"), "", files_abs)
+
+  # Ensure POSIX separators + no leading slash
   rel <- gsub("\\\\", "/", rel)
+  rel <- sub("^/+", "", rel)
 
   # Apply include/exclude filters on relative path
   keep <- rep(TRUE, length(rel))
@@ -122,22 +134,23 @@ minio_fput_dir <- function(bucket,
     keep <- keep & !exc
   }
 
-  files <- files[keep]
+  files <- files_abs[keep]
   rel <- rel[keep]
 
   if (length(files) == 0) {
-    out <- data.frame(
+    return(data.frame(
       local_file = character(0),
       object = character(0),
       uploaded = logical(0),
       error = character(0),
       stringsAsFactors = FALSE
-    )
-    return(out)
+    ))
   }
 
-  # Build object keys
+  # Build object keys (S3-style: POSIX, no leading slash)
   objects <- if (is.null(prefix)) rel else paste0(prefix, "/", rel)
+  objects <- gsub("\\\\", "/", objects)
+  objects <- sub("^/+", "", objects)
 
   # Prepare result table
   res <- data.frame(
@@ -152,7 +165,7 @@ minio_fput_dir <- function(bucket,
     return(res)
   }
 
-  # Upload sequentially (simple + predictable)
+  # Upload sequentially
   for (i in seq_along(files)) {
     r <- tryCatch(
       minio_fput_object(

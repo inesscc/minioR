@@ -59,29 +59,20 @@ test_that("minio_fput_dir dry_run returns planned uploads with normalized prefix
   expect_true(all(out$uploaded == FALSE))
   expect_true(all(is.na(out$error)))
 
-  # Normalizers
-  norm_key <- function(x) {
-    x <- gsub("\\\\", "/", x)
-    x <- sub("^/+", "", x)
-    x
-  }
+  # Object keys should be S3-style: POSIX and no leading slashes
+  expect_false(any(grepl("\\\\", out$object)))
+  expect_false(any(grepl("^/+", out$object)))
 
-  # 1) Primary assertion: planned files (derived from local_file, OS-agnostic)
-  rel_from_local <- gsub("\\\\", "/", out$local_file)
-  base_dir <- gsub("\\\\", "/", normalizePath(d, winslash = "/", mustWork = TRUE))
-  rel_from_local <- sub(paste0("^", base_dir, "/+"), "", rel_from_local)
+  # Prefix normalized
+  expect_true(all(startsWith(out$object, "raw/projectA/")))
 
-  expect_equal(sort(rel_from_local), sort(c("a.csv", "sub/d.json")))
+  # Should include a.csv and sub/d.json only
+  rel_objects <- sub("^raw/projectA/+", "", out$object)
+  expect_equal(sort(rel_objects), sort(c("a.csv", "sub/d.json")))
 
-  # 2) If object keys are populated, validate prefix normalization + posix separators
-  obj <- norm_key(out$object)
-  if (any(nzchar(obj))) {
-    expect_false(any(grepl("\\\\", obj)))
-    expect_true(all(startsWith(obj, "raw/projectA/")))
-    rel_objects <- sub("^raw/projectA/+", "", obj)
-    rel_objects <- norm_key(rel_objects)
-    expect_equal(sort(rel_objects), sort(c("a.csv", "sub/d.json")))
-  }
+  # And local_file should end with those paths (OS-agnostic)
+  lf <- gsub("\\\\", "/", out$local_file)
+  expect_true(all(grepl("(a\\.csv|sub/d\\.json)$", lf)))
 })
 
 test_that("minio_fput_dir uploads directory preserving structure (integration)", {
@@ -96,7 +87,6 @@ test_that("minio_fput_dir uploads directory preserving structure (integration)",
   dir.create(file.path(d, "sub"), recursive = TRUE)
   on.exit(unlink(d, recursive = TRUE, force = TRUE), add = TRUE)
 
-  # Create files
   f1 <- file.path(d, "a.csv")
   f2 <- file.path(d, "sub", "b.json")
 
@@ -122,13 +112,11 @@ test_that("minio_fput_dir uploads directory preserving structure (integration)",
   expect_true(all(res$uploaded))
   expect_true(all(is.na(res$error)))
 
-  # Objects should exist
   obj1 <- paste0(prefix, "/a.csv")
   obj2 <- paste0(prefix, "/sub/b.json")
   expect_true(minio_object_exists(bucket, obj1, use_https = use_https, region = region))
   expect_true(minio_object_exists(bucket, obj2, use_https = use_https, region = region))
 
-  # Cleanup remote
   minio_remove_object(bucket, obj1, use_https = use_https, region = region)
   minio_remove_object(bucket, obj2, use_https = use_https, region = region)
   expect_false(minio_object_exists(bucket, obj1, use_https = use_https, region = region))
@@ -158,13 +146,8 @@ test_that("minio_fput_dir honors recursive=FALSE (dry_run)", {
   # local_file check OS-agnostic
   expect_true(grepl("/a\\.csv$", gsub("\\\\", "/", out$local_file)))
 
-  # If object is populated, assert it; otherwise, at least ensure it's not NA
+  # object key should be just a.csv
   obj <- gsub("\\\\", "/", out$object)
   obj <- sub("^/+", "", obj)
-
-  expect_false(is.na(obj))
-
-  if (nzchar(obj)) {
-    expect_equal(obj, "a.csv")
-  }
+  expect_equal(obj, "a.csv")
 })
