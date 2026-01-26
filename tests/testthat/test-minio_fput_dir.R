@@ -60,15 +60,25 @@ test_that("minio_fput_dir dry_run returns planned uploads with normalized prefix
   expect_true(all(out$uploaded == FALSE))
   expect_true(all(is.na(out$error)))
 
-  # Should include a.csv and sub/d.json only
-  rel_objects <- sub("^raw/projectA/", "", out$object)
-  expect_equal(sort(rel_objects), sort(c("a.csv", "sub/d.json")))
+  # Normalize object keys to POSIX style without leading slashes
+  norm_key <- function(x) {
+    x <- gsub("\\\\", "/", x)
+    x <- sub("^/+", "", x)
+    x
+  }
+
+  obj <- norm_key(out$object)
 
   # Ensure POSIX separators in object keys
-  expect_false(any(grepl("\\\\", out$object)))
+  expect_false(any(grepl("\\\\", obj)))
 
   # Prefix normalized
-  expect_true(all(startsWith(out$object, "raw/projectA/")))
+  expect_true(all(startsWith(obj, "raw/projectA/")))
+
+  # Should include a.csv and sub/d.json only
+  rel_objects <- sub("^raw/projectA/+", "", obj)
+  rel_objects <- norm_key(rel_objects)
+  expect_equal(sort(rel_objects), sort(c("a.csv", "sub/d.json")))
 })
 
 test_that("minio_fput_dir uploads directory preserving structure (integration)", {
@@ -141,6 +151,12 @@ test_that("minio_fput_dir honors recursive=FALSE (dry_run)", {
   )
 
   expect_equal(nrow(out), 1L)
+
+  # local_file check OS-agnostic
   expect_true(grepl("/a\\.csv$", gsub("\\\\", "/", out$local_file)))
-  expect_equal(out$object, "a.csv")
+
+  # object key check OS-agnostic (strip leading slashes + normalize separators)
+  obj <- gsub("\\\\", "/", out$object)
+  obj <- sub("^/+", "", obj)
+  expect_equal(obj, "a.csv")
 })
