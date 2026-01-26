@@ -1,0 +1,52 @@
+url: https://inesscc.github.io/minioR/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [github]
+
+reference:
+  - title: "Package"
+    desc: "Package overview."
+    contents:
+      - minioR
+
+  - title: "Object management"
+    desc: "Discover, inspect, and validate objects."
+    contents:
+      - minio_list_objects
+      - minio_object_exists
+      - minio_get_metadata
+
+  - title: "Read and download"
+    desc: "Retrieve objects as raw, files, or parsed R objects."
+    contents:
+      - minio_get_object
+      - minio_download_object
+      - minio_read_object
+      - minio_read_many
+      - starts_with("minio_get_")
+
+  - title: "Write and upload"
+    desc: "Upload objects from memory, files, or via writer helpers."
+    contents:
+      - minio_put_object
+      - minio_fput_object
+      - minio_fput_dir
+      - minio_write_object
+
+  - title: "Object operations"
+    desc: "Server-side operations over existing objects."
+    contents:
+      - minio_copy_object
+      - minio_move_object
+      - minio_sync_objects
+
+  - title: "Delete and cleanup"
+    desc: "Remove objects from MinIO."
+    contents:
+      - minio_remove_object
+      - minio_remove_objects

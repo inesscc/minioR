@@ -39,17 +39,30 @@ Access to MinIO is configured using environment variables:
 
 \seealso{
 \itemize{
-  \item \code{\link{minio_put_object}}
-  \item \code{\link{minio_fput_object}}
-  \item \code{\link{minio_get_object}}
-  \item \code{\link{minio_get_object_metadata}}
-  \item \code{\link{minio_get_csv}}
-  \item \code{\link{minio_get_parquet}}
-  \item \code{\link{minio_download_object}}
-  \item \code{\link{minio_copy_object}}
-  \item \code{\link{minio_list_objects}}
-  \item \code{\link{minio_object_exists}}
-  \item \code{\link{minio_remove_object}}
+   \item \code{\link{minio_list_objects}}
+   \item \code{\link{minio_object_exists}}
+   \item \code{\link{minio_get_metadata}}
+   \item \code{\link{minio_read_object}}
+   \item \code{\link{minio_read_many}}
+   \item \code{\link{minio_get_object}}
+   \item \code{\link{minio_get_csv}}
+   \item \code{\link{minio_get_dta}}
+   \item \code{\link{minio_get_feather}}
+   \item \code{\link{minio_get_json}}
+   \item \code{\link{minio_get_parquet}}
+   \item \code{\link{minio_get_excel}}
+   \item \code{\link{minio_get_rds}}
+   \item \code{\link{minio_get_rdata}}
+   \item \code{\link{minio_download_object}}
+   \item \code{\link{minio_write_object}}
+   \item \code{\link{minio_put_object}}
+   \item \code{\link{minio_fput_object}}
+   \item \code{\link{minio_fput_dir}}
+   \item \code{\link{minio_remove_object}}
+   \item \code{\link{minio_remove_objects}}
+   \item \code{\link{minio_copy_object}}
+   \item \code{\link{minio_move_object}}
+   \item \code{\link{minio_sync_objects}}
 }
 }
 \author{

@@ -32,6 +32,7 @@ Description: Provides a simplified and robust interface for interacting with
     reduce boilerplate code and common pitfalls when managing buckets,
     objects, and data assets in MinIO environments.
 License: MIT + file LICENSE
+URL: https://inesscc.github.io/minioR/, https://github.com/inesscc/minioR
 Encoding: UTF-8
 LazyData: true
 Imports:

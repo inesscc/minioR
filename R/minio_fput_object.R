@@ -21,8 +21,8 @@
 #' \dontrun{
 #' minio_fput_object(
 #'   bucket = "assets",
-#'   object = "raw/example.parquet"
-#'   file = "data/example.parquet",
+#'   object = "raw/example.parquet",
+#'   file = "data/example.parquet"
 #' )
 #' }
 #'

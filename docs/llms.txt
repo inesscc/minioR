@@ -1,0 +1,213 @@
+# minioR
+
+## Overview
+
+`minioR` is an R package that provides a **simple, consistent, and
+production-ready interface** for interacting with **MinIO object
+storage** from R.
+
+The package acts as a lightweight wrapper around low-level S3-compatible
+APIs, focusing on:
+
+- Clear and explicit function naming
+- Robust error handling
+- Safe defaults for data workflows
+- Ease of use in analytical and data engineering pipelines
+
+`minioR` is especially suited for data teams using MinIO as a data lake,
+object store, or intermediate storage layer.
+
+------------------------------------------------------------------------
+
+## Features
+
+- Upload and download objects to/from MinIO
+- Support for in-memory (raw) and file-based uploads
+- Explicit handling of content types
+- Multipart upload support for large objects
+- Clear and informative error messages
+- Minimal configuration with sensible defaults
+
+------------------------------------------------------------------------
+
+## Installation
+
+### CRAN
+
+Once released on CRAN, install the package with:
+
+``` r
+install.packages("minioR")
+```
+
+### Development version
+
+You can install the development version from GitHub:
+
+``` r
+install.packages("devtools")
+devtools::install_github("https://github.com/inesscc/minioR.git")
+```
+
+------------------------------------------------------------------------
+
+## Configuration
+
+minioR uses standard MinIO / S3 environment variables.
+
+Make sure the following variables are defined before using the package:
+
+``` r
+Sys.setenv(
+  AWS_S3_ENDPOINT = "localhost:9000",
+  AWS_REGION = "us-east-1",
+  AWS_SECRET_ACCESS_KEY = "minioadmin",
+  AWS_ACCESS_KEY_ID = "minioadmin",
+  AWS_SIGNATURE_VERSION=2
+)
+```
+
+HTTPS can be enabled depending on your MinIO deployment.
+
+------------------------------------------------------------------------
+
+## Quick Start
+
+### List Objects
+
+``` r
+objs <- minio_list_objects(
+  bucket = "data",
+  prefix = "raw/",
+  recursive = TRUE
+)
+```
+
+### Read a CSV directly from MinIO
+
+``` r
+df <- minio_get_csv(
+  bucket = "data",
+  object = "raw/example.csv"
+)
+```
+
+### Upload data from memory
+
+``` r
+minio_put_object(
+  bucket = "data",
+  object = "tmp/hello.txt",
+  raw_obj = charToRaw("Hello MinIO"),
+  content_type = "text/plain"
+)
+```
+
+------------------------------------------------------------------------
+
+## Documentation
+
+Full documentation, tutorials, and function reference are available on
+the package website:
+
+<https://inesscc.github.io/minioR/>
+
+The site is built with pkgdown and includes:
+
+- Getting started guides
+- Format-specific readers and writers
+- Data lake patterns and best practices
+- Complete function reference
+
+------------------------------------------------------------------------
+
+## License
+
+MIT License © 2026
+
+# Package index
+
+## Package
+
+Package overview.
+
+- [`minioR-package`](https://inesscc.github.io/minioR/reference/minioR.md)
+  [`minioR`](https://inesscc.github.io/minioR/reference/minioR.md) :
+  minioR: A Simple MinIO Client for R
+
+## Object management
+
+Discover, inspect, and validate objects.
+
+- [`minio_list_objects()`](https://inesscc.github.io/minioR/reference/minio_list_objects.md)
+  : List Objects in a MinIO Bucket
+- [`minio_object_exists()`](https://inesscc.github.io/minioR/reference/minio_object_exists.md)
+  : Check Whether an Object Exists in MinIO
+- [`minio_get_metadata()`](https://inesscc.github.io/minioR/reference/minio_get_metadata.md)
+  : Retrieve Object Metadata from MinIO
+
+## Read and download
+
+Retrieve objects as raw, files, or parsed R objects.
+
+- [`minio_get_object()`](https://inesscc.github.io/minioR/reference/minio_get_object.md)
+  : Download an Object from MinIO as Raw Bytes
+- [`minio_download_object()`](https://inesscc.github.io/minioR/reference/minio_download_object.md)
+  : Download an Object from MinIO to Disk
+- [`minio_read_object()`](https://inesscc.github.io/minioR/reference/minio_read_object.md)
+  : Read an Object from MinIO (Auto-detect by Extension)
+- [`minio_read_many()`](https://inesscc.github.io/minioR/reference/minio_read_many.md)
+  : Read and Concatenate Many Parquet Objects from MinIO
+- [`minio_get_csv()`](https://inesscc.github.io/minioR/reference/minio_get_csv.md)
+  : Read a CSV File from MinIO
+- [`minio_get_dta()`](https://inesscc.github.io/minioR/reference/minio_get_dta.md)
+  : Read a Stata (.dta) File from MinIO
+- [`minio_get_excel()`](https://inesscc.github.io/minioR/reference/minio_get_excel.md)
+  : Read an Excel (.xlsx) File from MinIO
+- [`minio_get_feather()`](https://inesscc.github.io/minioR/reference/minio_get_feather.md)
+  : Read a Feather File from MinIO
+- [`minio_get_json()`](https://inesscc.github.io/minioR/reference/minio_get_json.md)
+  : Read a JSON File from MinIO
+- [`minio_get_metadata()`](https://inesscc.github.io/minioR/reference/minio_get_metadata.md)
+  : Retrieve Object Metadata from MinIO
+- [`minio_get_parquet()`](https://inesscc.github.io/minioR/reference/minio_get_parquet.md)
+  : Read a Parquet File from MinIO
+- [`minio_get_rdata()`](https://inesscc.github.io/minioR/reference/minio_get_rdata.md)
+  : Read an RData/RDA File from MinIO
+- [`minio_get_rds()`](https://inesscc.github.io/minioR/reference/minio_get_rds.md)
+  : Read an RDS File from MinIO
+
+## Write and upload
+
+Upload objects from memory, files, or via writer helpers.
+
+- [`minio_put_object()`](https://inesscc.github.io/minioR/reference/minio_put_object.md)
+  : Upload an Object to MinIO from Memory
+- [`minio_fput_object()`](https://inesscc.github.io/minioR/reference/minio_fput_object.md)
+  : Upload a Local File to MinIO
+- [`minio_fput_dir()`](https://inesscc.github.io/minioR/reference/minio_fput_dir.md)
+  : Upload a Local Directory to MinIO (Preserve Structure)
+- [`minio_write_object()`](https://inesscc.github.io/minioR/reference/minio_write_object.md)
+  : Write an Object to MinIO (Auto-detect by Extension)
+
+## Object operations
+
+Server-side operations over existing objects.
+
+- [`minio_copy_object()`](https://inesscc.github.io/minioR/reference/minio_copy_object.md)
+  : Copy an Object in MinIO
+- [`minio_move_object()`](https://inesscc.github.io/minioR/reference/minio_move_object.md)
+  : Move an Object in MinIO (Copy + Remove with Size Verification)
+- [`minio_sync_objects()`](https://inesscc.github.io/minioR/reference/minio_sync_objects.md)
+  : Sync Local Files/Directories with MinIO (Wrapper around
+  aws.s3::s3sync)
+
+## Delete and cleanup
+
+Remove objects from MinIO.
+
+- [`minio_remove_object()`](https://inesscc.github.io/minioR/reference/minio_remove_object.md)
+  : Remove an Object from MinIO
+- [`minio_remove_objects()`](https://inesscc.github.io/minioR/reference/minio_remove_objects.md)
+  : Remove Multiple Objects from MinIO
+
