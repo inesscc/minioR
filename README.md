@@ -69,39 +69,6 @@ HTTPS can be enabled depending on your MinIO deployment.
 
 ---
 
-## Quick Start
-
-### List Objects
-
-```r
-objs <- minio_list_objects(
-  bucket = "data",
-  prefix = "raw/",
-  recursive = TRUE
-)
-```
-
-### Read a CSV directly from MinIO
-
-```r
-df <- minio_get_csv(
-  bucket = "data",
-  object = "raw/example.csv"
-)
-```
-
-### Upload data from memory
-```r
-minio_put_object(
-  bucket = "data",
-  object = "tmp/hello.txt",
-  raw_obj = charToRaw("Hello MinIO"),
-  content_type = "text/plain"
-)
-```
-
----
-
 ## Documentation
 
 Full documentation, tutorials, and function reference are available on the package website:
