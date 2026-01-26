@@ -9,7 +9,7 @@ test_that("minio_copy_object copies an object (integration)", {
   payload <- charToRaw("hello minioR\n")
 
   # upload
-  minio_put_object(bucket = bucket, raw = payload, object = key1, content_type = "text/plain")
+  minio_put_object(bucket = bucket, object = key1, raw = payload, content_type = "text/plain")
   expect_true(minio_object_exists(bucket, key1))
 
   # copy

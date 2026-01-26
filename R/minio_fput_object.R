@@ -7,9 +7,9 @@
 #' validation and clearer error handling for MinIO environments.
 #'
 #' @param bucket Character. Name of the MinIO bucket.
-#' @param file Character. Path to the local file to upload.
 #' @param object Character or \code{NULL}. Object key (path) to use in the
 #'   bucket. If \code{NULL} or empty, defaults to \code{basename(file)}.
+#' @param file Character. Path to the local file to upload.
 #' @param multipart Logical. Whether to enable multipart upload. Defaults
 #'   to \code{FALSE}.
 #' @param use_https Logical. Whether to use HTTPS when connecting to MinIO.
@@ -21,13 +21,13 @@
 #' \dontrun{
 #' minio_fput_object(
 #'   bucket = "assets",
-#'   file = "data/example.parquet",
 #'   object = "raw/example.parquet"
+#'   file = "data/example.parquet",
 #' )
 #' }
 #'
 #' @export
-minio_fput_object <- function(bucket, file, object = NULL, multipart = FALSE, use_https = TRUE, region = "") {
+minio_fput_object <- function(bucket, object = NULL, file, multipart = FALSE, use_https = TRUE, region = "") {
   # Basic input validation
   stopifnot(
     is.character(bucket), length(bucket) == 1,

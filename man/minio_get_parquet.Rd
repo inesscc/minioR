@@ -9,31 +9,41 @@ minio_get_parquet(bucket, object)
 \arguments{
 \item{bucket}{Character. Name of the MinIO bucket.}
 
-\item{object}{Character. Object key (path) of the Parquet file within
-the bucket.}
+\item{object}{Character. Object key (path) of the Parquet file within the bucket.}
 }
 \value{
-A tabular object read from the Parquet file. Usually a
-  \code{data.frame}, \code{tibble}, or \code{arrow::Table}, depending on
-  the Arrow configuration.
+A tabular object read from the Parquet file. The exact return type
+  depends on the Arrow configuration and may be a \code{data.frame},
+  \code{tibble}, or \code{arrow::Table}.
 }
 \description{
-Downloads a Parquet object stored in a MinIO bucket and reads it into
-memory using the \pkg{arrow} package. Internally, the function retrieves
-the object contents as raw bytes via \code{\link{minio_get_object}}, writes
+Downloads a Parquet \code{.parquet} file stored in a MinIO bucket and reads it
+into memory using the \pkg{arrow} package. Internally, the function retrieves
+the object contents as raw bytes using \code{\link{minio_get_object}}, writes
 them to a temporary file, and then delegates parsing to
 \code{\link[arrow]{read_parquet}}.
 }
 \details{
-The returned object depends on the Arrow backend configuration and is
-typically a \code{data.frame}, \code{tibble}, or an \code{arrow::Table}.
+The returned object depends on the Arrow backend configuration and may be a
+base \code{data.frame}, a \code{tibble}, or an \code{arrow::Table}. Unlike
+other \code{minio_get_*} readers, this function does not coerce the result to
+a specific R data structure, allowing users to take full advantage of Arrow
+for large or lazy workflows.
 }
 \examples{
 \dontrun{
-df <- minio_get_parquet(
+tbl <- minio_get_parquet(
   bucket = "vault",
   object = "data/example.parquet"
 )
+
+# Convert explicitly if needed
+df <- as.data.frame(tbl)
 }
 
+}
+\seealso{
+\code{\link{minio_read_many}},
+\code{\link{minio_read_object}},
+\code{\link{minio_get_csv}}
 }

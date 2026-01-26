@@ -6,8 +6,8 @@
 \usage{
 minio_fput_object(
   bucket,
-  file,
   object = NULL,
+  file,
   multipart = FALSE,
   use_https = TRUE,
   region = ""
@@ -16,10 +16,10 @@ minio_fput_object(
 \arguments{
 \item{bucket}{Character. Name of the MinIO bucket.}
 
-\item{file}{Character. Path to the local file to upload.}
-
 \item{object}{Character or \code{NULL}. Object key (path) to use in the
 bucket. If \code{NULL} or empty, defaults to \code{basename(file)}.}
+
+\item{file}{Character. Path to the local file to upload.}
 
 \item{multipart}{Logical. Whether to enable multipart upload. Defaults
 to \code{FALSE}.}
@@ -43,8 +43,8 @@ validation and clearer error handling for MinIO environments.
 \dontrun{
 minio_fput_object(
   bucket = "assets",
-  file = "data/example.parquet",
   object = "raw/example.parquet"
+  file = "data/example.parquet",
 )
 }
 

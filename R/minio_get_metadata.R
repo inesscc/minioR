@@ -29,13 +29,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' info <- minio_get_object_metadata("assets", "path/file.parquet")
+#' info <- minio_get_metadata("assets", "path/file.parquet")
 #' info$size
 #' info$last_modified
 #' }
 #'
 #' @export
-minio_get_object_metadata <- function(bucket, object, quiet = TRUE, use_https = TRUE, region = "") {
+minio_get_metadata <- function(bucket, object, quiet = TRUE, use_https = TRUE, region = "") {
   # Basic input validation
   stopifnot(
     is.character(bucket), length(bucket) == 1,

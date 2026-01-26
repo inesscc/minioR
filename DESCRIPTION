@@ -40,5 +40,9 @@ Suggests:
     arrow,
     testthat (>= 3.0.0),
     tzdb
+    haven
+    readxl
+    writexl
+    feather
 RoxygenNote: 7.3.3
 Config/testthat/edition: 3

@@ -1,4 +1,4 @@
-test_that("minio_get_object_metadata returns expected fields and headers (integration)", {
+test_that("minio_get_metadata returns expected fields and headers (integration)", {
   skip_if_no_minio()
 
   bucket <- minior_bucket()
@@ -22,7 +22,7 @@ test_that("minio_get_object_metadata returns expected fields and headers (integr
   )
   expect_true(minio_object_exists(bucket, key, use_https = use_https, region = region))
 
-  info <- minio_get_object_metadata(
+  info <- minio_get_metadata(
     bucket = bucket,
     object = key,
     quiet = TRUE,
@@ -59,7 +59,7 @@ test_that("minio_get_object_metadata returns expected fields and headers (integr
   expect_false(minio_object_exists(bucket, key, use_https = use_https, region = region))
 })
 
-test_that("minio_get_object_metadata errors when object does not exist (integration)", {
+test_that("minio_get_metadata errors when object does not exist (integration)", {
   skip_if_no_minio()
 
   bucket <- minior_bucket()
@@ -70,7 +70,7 @@ test_that("minio_get_object_metadata errors when object does not exist (integrat
   expect_false(minio_object_exists(bucket, missing_key, use_https = use_https, region = region))
 
   expect_error(
-    minio_get_object_metadata(
+    minio_get_metadata(
       bucket = bucket,
       object = missing_key,
       quiet = TRUE,
@@ -81,16 +81,16 @@ test_that("minio_get_object_metadata errors when object does not exist (integrat
   )
 })
 
-test_that("minio_get_object_metadata validates inputs", {
-  expect_error(minio_get_object_metadata(bucket = 123, object = "x"))
-  expect_error(minio_get_object_metadata(bucket = "b", object = 456))
-  expect_error(minio_get_object_metadata(bucket = c("b1", "b2"), object = "x"))
-  expect_error(minio_get_object_metadata(bucket = "b", object = c("x1", "x2")))
-  expect_error(minio_get_object_metadata(bucket = "b", object = "x", quiet = "yes"))
-  expect_error(minio_get_object_metadata(bucket = "b", object = "x", quiet = c(TRUE, FALSE)))
+test_that("minio_get_metadata validates inputs", {
+  expect_error(minio_get_metadata(bucket = 123, object = "x"))
+  expect_error(minio_get_metadata(bucket = "b", object = 456))
+  expect_error(minio_get_metadata(bucket = c("b1", "b2"), object = "x"))
+  expect_error(minio_get_metadata(bucket = "b", object = c("x1", "x2")))
+  expect_error(minio_get_metadata(bucket = "b", object = "x", quiet = "yes"))
+  expect_error(minio_get_metadata(bucket = "b", object = "x", quiet = c(TRUE, FALSE)))
 })
 
-test_that("minio_get_object_metadata works with quiet = FALSE (integration)", {
+test_that("minio_get_metadata works with quiet = FALSE (integration)", {
   skip_if_no_minio()
 
   bucket <- minior_bucket()
@@ -112,7 +112,7 @@ test_that("minio_get_object_metadata works with quiet = FALSE (integration)", {
     )
   )
 
-  info <- minio_get_object_metadata(
+  info <- minio_get_metadata(
     bucket = bucket,
     object = key,
     quiet = FALSE,
